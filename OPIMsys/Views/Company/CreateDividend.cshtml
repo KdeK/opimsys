@@ -1,0 +1,72 @@
+﻿@model OPIMsys.Models.StockDividend
+
+@{
+    ViewBag.Title = "CreateDividend";
+}
+
+<h2>Dividend</h2>
+
+@using (Html.BeginForm()) {
+    @Html.AntiForgeryToken()
+    @Html.ValidationSummary(true)
+
+    <fieldset>
+        <legend>StockDividend</legend>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.RecordDate)
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.RecordDate)
+            @Html.ValidationMessageFor(model => model.RecordDate)
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.PayableDate)
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.PayableDate)
+            @Html.ValidationMessageFor(model => model.PayableDate)
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.ExDividendDate)
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.ExDividendDate)
+            @Html.ValidationMessageFor(model => model.ExDividendDate)
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.Dividend)
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.Dividend)
+            @Html.ValidationMessageFor(model => model.Dividend)
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.Notes)
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.Notes)
+            @Html.ValidationMessageFor(model => model.Notes)
+        </div>
+
+
+        @Html.HiddenFor(model => model.StockDividendId)
+        @Html.HiddenFor(model => model.StockSymbolId)
+        
+        <p>
+            <input type="submit" value="Create" />
+        </p>
+    </fieldset>
+}
+
+<div>
+    @Html.ActionLink("Back to List", "Dividends", new { id=Model.StockSymbolId})
+</div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}

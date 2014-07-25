@@ -1,0 +1,43 @@
+﻿@using OPIMsys.Models
+
+@{
+    ViewBag.Title = "UpdatePeers";
+}
+
+<h2>UpdatePeers</h2>
+@using (Html.BeginForm()) {
+    @Html.AntiForgeryToken()
+    @Html.ValidationSummary(true)
+    
+    <fieldset>
+        <legend>Company Market Comparison</legend>
+
+        
+
+         @foreach (var symbol in ViewBag.Symbols)
+        {
+            string symbolId = "StockSymbolId" + symbol.StockSymbolId.ToString();
+            bool isChecked = false;
+            if (ViewBag.SelectedSymbols != null)
+            {
+                int count = (ViewBag.SelectedSymbols as List<CompanyMarketComparison>).FindAll(x => x.StockSymbolId == symbol.StockSymbolId).Count();
+                if (count > 0)
+                {
+                    isChecked = true;
+                }
+            }
+             @Html.CheckBox(symbolId, isChecked) @symbol.Symbol<br />
+        }
+        <p>
+            <input type="submit" value="Save" />
+        </p>
+    </fieldset>
+}
+
+<div>
+    @Html.ActionLink("Back to List", "Index")
+</div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}

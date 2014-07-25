@@ -1,0 +1,61 @@
+﻿@model OPIMsys.Models.StockDividend
+
+@{
+    ViewBag.Title = "DeleteDividend";
+}
+
+<h2>DeleteDividend</h2>
+
+<h3>Are you sure you want to delete this?</h3>
+<fieldset>
+    <legend>StockDividend</legend>
+
+    <div class="display-label">
+         @Html.DisplayNameFor(model => model.RecordDate)
+    </div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.RecordDate)
+    </div>
+
+    <div class="display-label">
+         @Html.DisplayNameFor(model => model.PayableDate)
+    </div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.PayableDate)
+    </div>
+
+    <div class="display-label">
+         @Html.DisplayNameFor(model => model.ExDividendDate)
+    </div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.ExDividendDate)
+    </div>
+
+    <div class="display-label">
+         @Html.DisplayNameFor(model => model.Dividend)
+    </div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.Dividend)
+    </div>
+
+    <div class="display-label">
+         @Html.DisplayNameFor(model => model.Notes)
+    </div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.Notes)
+    </div>
+
+    <div class="display-label">
+         @Html.DisplayNameFor(model => model.StockSymbolId)
+    </div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.StockSymbolId)
+    </div>
+</fieldset>
+@using (Html.BeginForm()) {
+    @Html.AntiForgeryToken()
+    <p>
+        <input type="submit" value="DeleteDividend" /> |
+        @Html.ActionLink("Back to List", "Dividends", new { id=Model.StockSymbolId})
+    </p>
+}

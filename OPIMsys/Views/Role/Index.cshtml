@@ -1,0 +1,38 @@
+﻿@model IEnumerable<OPIMsys.Models.RoleModel>
+
+@{
+    ViewBag.Title = "Roles";
+}
+
+<h2>Roles</h2>
+
+<p>
+    @Html.ActionLink("Create New", "Create")
+</p>
+<div class="dataTables_wrapper">
+<table class="dataTable">
+    <thead>
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.RoleName)
+        </th>
+        <th></th>
+    </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.RoleName)
+        </td>
+        <td>@if (item.RoleName != "Administrator" && item.RoleName != "BackEndUser")
+            {
+            @Html.ActionLink("Edit", "Edit", new { name=item.RoleName }) 
+            @Html.ActionLink("Delete", "Delete", new { name=item.RoleName })
+            }
+        </td>
+    </tr>
+}
+</tbody>
+</table>
+</div>

@@ -1,0 +1,144 @@
+﻿@model OPIMsys.Models.CompanyDataType
+
+@{
+    ViewBag.Title = "Details";
+}
+
+
+
+<h2>Details</h2>
+
+<fieldset>
+    <legend>CompanyDataType</legend>
+
+    <div class="display-label">
+         @Html.DisplayNameFor(model => model.Title)
+    </div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.Title)
+    </div>
+
+    <div class="display-label">
+         @Html.DisplayNameFor(model => model.Notes)
+    </div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.Notes)
+    </div>
+    <div class="dataTable"></div>
+    <a href="#" class="addNewRow">Add New Row</a>
+</fieldset>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id=Model.CompanyDataTypeId }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>
+<script src="/Scripts/jquery.jeditable.js" type="text/javascript"></script>
+<script type="text/javascript">
+    @Html.Raw(ViewBag.jsArray)
+    $(document).ready(function () {
+        var header = "<table><thead><tr><th></th>";
+        var varName = "<tr><td></td>";
+        var body = new Array();
+        for (i = 0; i < valueArr.length; i++) {
+            header += "<th colspan=\""+valueArr[0].dataset[0].values.length+"\" >" + valueArr[i].name + "</th>";
+            
+            for (j = 0; j < valueArr[0].dataset.length; j++) {
+                if(i==0){
+                    body[j] = "<tr><td>" + valueArr[0].dataset[j].date + "</td>";
+                }
+                for (k = 0; k < valueArr[i].dataset[j].values.length; k++) {
+                    body[j] += "<td class='editable' data-date=\""+valueArr[i].dataset[j].date+"\" data-compid=\"" + valueArr[i].companyId + "\" data-varid=\"" + valueArr[i].dataset[j].values[k].variableId + "\">" + valueArr[i].dataset[j].values[k].value + "</td>";
+                    
+                    if (j==0 && valueArr[0].dataset[0].values.length > 1) {
+                        varName += "<td>" + valueArr[i].dataset[j].values[k].title + "</td>";
+                    }
+                }
+            }
+        }
+        header += "</tr>";
+        if (valueArr[0].dataset[0].values.length > 1)
+            header += varName;
+        header += "<th></th></tr></thead><tbody>";
+        for (l = 0; l < body.length; l++) {
+            header += body[l] + "<td><a href='#' class='removeRow'>Delete</a></td></tr>";
+        }
+        header += "</tbody></table>";
+        $(".dataTable").html(header);
+
+        $(document).ready(function () {
+            $(".addNewRow").click(function (e) {
+                e.preventDefault();
+                var newDate = prompt("Please enter the date for the new records (mm/dd/yyyy)", "");
+                if (newDate != null && newDate != "") {
+                    if (!isValidDate(newDate)) {
+                        alert("That is not a valid date");
+                    }
+                    else {
+                        var html = $(".dataTable tbody tr:last").html();
+                        $(".dataTable tbody").append("<tr>" + html + "</tr>");
+                        $(".dataTable tbody tr:last td:first").html(newDate);
+                        $(".dataTable tbody tr:last td.editable").html("0");
+                        $(".dataTable tbody tr:last td.editable").attr("data-date", newDate);
+                        editable();
+                    }
+
+                }
+                
+            });
+           
+            editable();
+        });
+    });
+    function editable() {
+        $('.removeRow').click(function (e) {
+            e.preventDefault();
+            var delDate = $(this).parent().parent().find("td:first").html();
+            var varid = $(this).parent().parent().find("td.editable:first").attr("data-varid");
+            $.ajax({
+                url: "/Table/DeleteRowData/" + varid + "?publishDate=" + delDate,
+                context: document.body
+            }).error(function (e) { alert(e); });
+
+            $(this).parent().parent().remove();
+        });
+        $('.editable').editable(function (value, settings) {
+            $.ajax({
+                url: "/Table/UpdateData/" + $(this).data("varid") + "?companyId=" + $(this).data("compid") + "&publishDate=" + $(this).data("date") + "&value=" + value,
+                context: document.body
+            }).error(function (e) { alert(e); });
+            console.log("/Table/UpdateData/" + $(this).data("varid") + "?companyId=" + $(this).data("compid") + "&publishDate=" + $(this).data("date") + "&value=" + value);
+            //console.log(value);
+            //console.log(settings);
+            return (value);
+        }, {
+            indicator: 'Saving',
+            tooltip: 'Click to edit...',
+            onblur: 'submit'
+        });
+    }
+
+    // Validates that the input string is a valid date formatted as "mm/dd/yyyy"
+    function isValidDate(dateString) {
+        // First check for the pattern
+        if (!/^\d{2}\/\d{2}\/\d{4}$/.test(dateString))
+            return false;
+
+        // Parse the date parts to integers
+        var parts = dateString.split("/");
+        var day = parseInt(parts[1], 10);
+        var month = parseInt(parts[0], 10);
+        var year = parseInt(parts[2], 10);
+
+        // Check the ranges of month and year
+        if (year < 1000 || year > 3000 || month == 0 || month > 12)
+            return false;
+
+        var monthLength = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
+
+        // Adjust for leap years
+        if (year % 400 == 0 || (year % 100 != 0 && year % 4 == 0))
+            monthLength[1] = 29;
+
+        // Check the range of the day
+        return day > 0 && day <= monthLength[month - 1];
+    };
+    </script>

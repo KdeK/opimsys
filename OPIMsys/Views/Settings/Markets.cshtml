@@ -1,0 +1,34 @@
+﻿@model IEnumerable<OPIMsys.Models.Market>
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2>Index</h2>
+
+<p>
+    @Html.ActionLink("Create New", "CreateMarket")
+</p>
+<table>
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.MarketName)
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.MarketName)
+        </td>
+        <td>
+            @Html.ActionLink("Edit", "EditMarket", new { id=item.MarketId }) |
+            @Html.ActionLink("Delete", "DeleteMarket", new { id=item.MarketId })
+        </td>
+    </tr>
+}
+
+</table>
+
+@Html.ActionLink("Back to settings", "Index")

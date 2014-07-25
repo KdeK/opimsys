@@ -1,0 +1,99 @@
+﻿@model IEnumerable<OPIMsys.Models.StockQuote>
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2>Index</h2>
+
+<p>
+    @Html.ActionLink("Create New", "Create")
+</p>
+<table>
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.QuoteDate)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.TradeDate)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Open)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.High)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Low)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Change)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Volume)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.MarketCap)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.EarningPerShare)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Dividend)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.LastPrice)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.StockSymbol.Symbol)
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.QuoteDate)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.TradeDate)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Open)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.High)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Low)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Change)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Volume)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.MarketCap)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.EarningPerShare)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Dividend)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.LastPrice)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.StockSymbol.Symbol)
+        </td>
+        <td>
+            @Html.ActionLink("Edit", "Edit", new { id=item.StockQuoteId }) |
+            @Html.ActionLink("Details", "Details", new { id=item.StockQuoteId }) |
+            @Html.ActionLink("Delete", "Delete", new { id=item.StockQuoteId })
+        </td>
+    </tr>
+}
+
+</table>

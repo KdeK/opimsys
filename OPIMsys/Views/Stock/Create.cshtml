@@ -1,0 +1,123 @@
+﻿@model OPIMsys.Models.StockQuote
+
+@{
+    ViewBag.Title = "Create";
+}
+
+<h2>Create</h2>
+
+@using (Html.BeginForm()) {
+    @Html.ValidationSummary(true)
+
+    <fieldset>
+        <legend>StockQuote</legend>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.QuoteDate)
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.QuoteDate)
+            @Html.ValidationMessageFor(model => model.QuoteDate)
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.TradeDate)
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.TradeDate)
+            @Html.ValidationMessageFor(model => model.TradeDate)
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.Open)
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.Open)
+            @Html.ValidationMessageFor(model => model.Open)
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.High)
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.High)
+            @Html.ValidationMessageFor(model => model.High)
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.Low)
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.Low)
+            @Html.ValidationMessageFor(model => model.Low)
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.Change)
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.Change)
+            @Html.ValidationMessageFor(model => model.Change)
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.Volume)
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.Volume)
+            @Html.ValidationMessageFor(model => model.Volume)
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.MarketCap)
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.MarketCap)
+            @Html.ValidationMessageFor(model => model.MarketCap)
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.EarningPerShare)
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.EarningPerShare)
+            @Html.ValidationMessageFor(model => model.EarningPerShare)
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.Dividend)
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.Dividend)
+            @Html.ValidationMessageFor(model => model.Dividend)
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.LastPrice)
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.LastPrice)
+            @Html.ValidationMessageFor(model => model.LastPrice)
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.StockSymbolId, "StockSymbol")
+        </div>
+        <div class="editor-field">
+            @Html.DropDownList("StockSymbolId", String.Empty)
+            @Html.ValidationMessageFor(model => model.StockSymbolId)
+        </div>
+
+        <p>
+            <input type="submit" value="Create" />
+        </p>
+    </fieldset>
+}
+
+<div>
+    @Html.ActionLink("Back to List", "Index")
+</div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}

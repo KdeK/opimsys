@@ -1,0 +1,33 @@
+﻿@model IEnumerable<OPIMsys.Models.CompanyDataType>
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2>Index</h2>
+
+<p>
+    @Html.ActionLink("Create New", "Edit", new { id = 0 })
+</p>
+<table>
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.Title)
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.Title)
+        </td>
+        <td>
+            @Html.ActionLink("Edit", "Edit", new { id=item.CompanyDataTypeId }) |
+            @Html.ActionLink("Data", "Data", new { id=item.CompanyDataTypeId }) |
+            @Html.ActionLink("Delete", "Delete", new { id=item.CompanyDataTypeId })
+        </td>
+    </tr>
+}
+
+</table>

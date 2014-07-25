@@ -1,0 +1,43 @@
+﻿@using OPIMsys.Models
+
+@{
+    ViewBag.Title = "UpdatePeers";
+}
+
+<h2>UpdatePeers</h2>
+@using (Html.BeginForm()) {
+    @Html.AntiForgeryToken()
+    @Html.ValidationSummary(true)
+    
+    <fieldset>
+        <legend>CompanyDataType</legend>
+
+        
+
+         @foreach (var company in ViewBag.Companies)
+        {
+            string companyId = "CompanyId" + company.CompanyId.ToString();
+            bool isChecked = false;
+            if (ViewBag.SelectedCompanies != null)
+            {
+                int count = (ViewBag.SelectedCompanies as List<CompanyPeer>).FindAll(x => x.PeerId == company.CompanyId).Count();
+                if (count > 0)
+                {
+                    isChecked = true;
+                }
+            }
+             @Html.CheckBox(companyId, isChecked) @company.Name<br />
+        }
+        <p>
+            <input type="submit" value="Save" />
+        </p>
+    </fieldset>
+}
+
+<div>
+    @Html.ActionLink("Back to List", "Index")
+</div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}

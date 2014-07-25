@@ -1,0 +1,49 @@
+﻿@model OPIMsys.Models.AccountApiKey
+
+@{
+    ViewBag.Title = "Edit";
+}
+
+<h2>Edit</h2>
+
+@using (Html.BeginForm()) {
+    @Html.ValidationSummary(true)
+
+    <fieldset>
+        <legend>Web API Key</legend>
+        @Html.HiddenFor(model => model.AccountApiKeyId)
+        @Html.HiddenFor(model => model.UserId)
+        <div class="editor-label">
+            @Html.LabelFor(model => model.ApiKey)
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.ApiKey)
+            @Html.ValidationMessageFor(model => model.ApiKey)
+        </div>
+        <div class="editor-label">
+            Company
+        </div>
+        <div class="editor-field">
+            @Html.DropDownListFor(model => model.CompanyId, (SelectList)ViewBag.Companies)
+            @Html.ValidationMessageFor(model => model.CompanyId)
+        </div>
+        <div class="editor-label">
+            User Password
+        </div>
+        <div class="editor-field">
+            @Html.Editor("UserPassword")
+            @Html.ValidationMessage("Password")
+        </div>
+        <p>
+            <input type="submit" value="Save" />
+        </p>
+    </fieldset>
+}
+
+<div>
+    @Html.ActionLink("Back to List", "Index")
+</div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}

@@ -1,0 +1,52 @@
+﻿@using OPIMsys.Models
+@model OPIMsys.Models.Group
+
+@{
+    ViewBag.Title = "UpdatePeers";
+}
+
+<h2>Group</h2>
+@using (Html.BeginForm()) {
+    @Html.AntiForgeryToken()
+    @Html.ValidationSummary(true)
+    
+    <fieldset>
+        <legend>Company Groups</legend>
+         @Html.HiddenFor(model => model.GroupId)
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.Name)
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.Name)
+            @Html.ValidationMessageFor(model => model.Name)
+        </div>
+        
+
+         @foreach (var company in ViewBag.Companies)
+        {
+            string companyId = "CompanyId" + company.CompanyId.ToString();
+            bool isChecked = false;
+            if (ViewBag.SelectedCompanies != null)
+            {
+                int count = (ViewBag.SelectedCompanies as List<CompanyGroup>).FindAll(x => x.CompanyId == company.CompanyId).Count();
+                if (count > 0)
+                {
+                    isChecked = true;
+                }
+            }
+             @Html.CheckBox(companyId, isChecked) @company.Name<br />
+        }
+        <p>
+            <input type="submit" value="Save" />
+        </p>
+    </fieldset>
+}
+
+<div>
+    @Html.ActionLink("Back to List", "Index")
+</div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}

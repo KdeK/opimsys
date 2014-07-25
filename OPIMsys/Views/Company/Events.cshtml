@@ -1,0 +1,50 @@
+﻿@model IEnumerable<OPIMsys.Models.Event>
+
+@{
+    ViewBag.Title = "Events";
+}
+
+<h2>Events</h2>
+
+<p>
+    @Html.ActionLink("Create New", "CreateEvent", new {companyid=ViewBag.CompanyId })
+</p>
+<table>
+    <tr>
+        <th>
+            Title
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.StartTime)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.EndTime)
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>@item.EventDetails.First().Summary
+            @foreach (var lang in ViewBag.Languages)
+            {
+                @Html.ActionLink((string)lang.Culture, "CreateEventDetails", new { id=item.EventId, langid=lang.LanguageId })
+            }
+
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.StartTime)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.EndTime)
+        </td>
+        <td>
+            @Html.ActionLink("Edit", "CreateEvent", new { id=item.EventId, companyid=ViewBag.CompanyId }) |
+            @Html.ActionLink("Delete", "DeleteEvent", new { id=item.EventId, companyid=ViewBag.CompanyId })
+        </td>
+    </tr>
+}
+
+</table>
+
+ @Html.ActionLink("Back to Company", "Details", new { id=ViewBag.CompanyId })

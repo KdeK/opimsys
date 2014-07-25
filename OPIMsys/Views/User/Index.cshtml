@@ -1,0 +1,50 @@
+﻿@model IEnumerable<OPIMsys.Models.UserProfile>
+
+@{
+    ViewBag.Title = "Users";
+}
+
+<h2>Users</h2>
+
+<p>
+    @Html.ActionLink("Create New", "Create")
+</p>
+<div class="dataTables_wrapper">
+<table class="dataTable">
+    <thead>
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.UserName)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.FullName)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Email)
+        </th>
+        <th></th>
+    </tr>
+    </thead>
+    <tbody>
+    @foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.UserName)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.FullName)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Email)
+        </td>
+        <td>
+            @if(item.UserName != "webmaster"){
+                @Html.ActionLink("Edit", "Edit", new { id=item.UserId }) 
+                @Html.ActionLink("Delete", "Delete", new { id = item.UserId })            
+            }
+        </td>
+    </tr>
+}
+    </tbody>
+</table>
+</div>

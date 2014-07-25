@@ -1,0 +1,54 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8" />
+        <title>@ViewBag.Title - My ASP.NET MVC Application</title>
+        <link href="~/favicon.ico" rel="shortcut icon" type="image/x-icon" />
+        <meta name="viewport" content="width=device-width" />
+        @Styles.Render("~/Content/css")
+        @Scripts.Render("~/bundles/modernizr")
+        @Scripts.Render("~/bundles/jquery")
+    </head>
+    <body>
+        <header>
+            <div class="content-wrapper">
+                <div class="float-left">
+                    <p class="site-title">@Html.ActionLink("opimSYS", "Index", "Home")</p>
+                </div>
+                
+            </div>
+        </header>
+        <div id="body">
+            @RenderSection("featured", required: false)
+             <nav class="left-nav">
+                <ul id="submenu">
+                    @if (Request.IsAuthenticated)
+                    {
+                            if (Roles.IsUserInRole("Administrator"))
+                            {
+                                <li>@Html.ActionLink("Companies", "", "Company")</li>
+                                <li>@Html.ActionLink("Data Tables", "", "Table")</li>
+                                <li>@Html.ActionLink("Settings", "", "Settings")</li>
+                                <li>@Html.ActionLink("Users", "", "User")</li>
+                                <li>@Html.ActionLink("Roles", "", "Role")</li>
+                            }
+                        
+                    }
+                </ul>
+            </nav>
+            <section class="content-wrapper main-content clear-fix">
+                @RenderBody()
+            </section>
+        </div>
+        <footer>
+            <div class="content-wrapper">
+                <div class="float-left">
+                    <p>&copy; @DateTime.Now.Year - OPIMsys</p>
+                </div>
+            </div>
+        </footer>
+
+        
+        @RenderSection("scripts", required: false)
+    </body>
+</html>

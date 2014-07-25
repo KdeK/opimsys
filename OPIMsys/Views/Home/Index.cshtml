@@ -1,0 +1,26 @@
+﻿@{
+    ViewBag.Title = "OPIMsys";
+}
+@section featured {
+    <section class="featured">
+        <div class="content-wrapper">
+            <hgroup class="title">
+                <h1>@ViewBag.Title.</h1>
+                <h2>@ViewBag.Message</h2>
+            </hgroup>
+           
+        </div>
+    </section>
+}
+ <p></p>
+@if (Roles.IsUserInRole("Administrator "))
+{
+    <ol class="round">
+        <li class="one">
+        </li>
+    </ol>
+}
+else
+{
+    <div>This is probably not the site you are looking for.  This is a private API for public information on public companies.</div>   
+}

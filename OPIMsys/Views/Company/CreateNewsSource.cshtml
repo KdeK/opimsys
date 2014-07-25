@@ -1,0 +1,51 @@
+﻿@model OPIMsys.Models.NewsSource
+
+@{
+    ViewBag.Title = "Create";
+}
+
+<h2>Create</h2>
+
+@using (Html.BeginForm()) {
+    @Html.ValidationSummary(true)
+    @Html.HiddenFor(model => model.CompanyId)
+    @Html.HiddenFor(model => model.NewsSourceId)
+    <fieldset>
+        <legend>Company Newssource</legend>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.NewsSourceType)
+        </div>
+        <div class="editor-field">
+            @Html.DropDownList("NewsSourceTypeList", String.Empty)
+            @Html.ValidationMessageFor(model => model.NewsSourceType)
+        </div>
+        <div class="editor-label">
+            @Html.LabelFor(model => model.Language)
+        </div>
+        <div class="editor-field">
+            @Html.DropDownList("LanguageList", String.Empty)
+            @Html.ValidationMessageFor(model => model.Language)
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.Link)
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.Link)
+            @Html.ValidationMessageFor(model => model.Link)
+        </div>
+
+        <p>
+            <input type="submit" value="Save" />
+        </p>
+    </fieldset>
+}
+
+<div>
+    @Html.ActionLink("Back to List", "Index")
+</div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}

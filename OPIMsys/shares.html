@@ -1,0 +1,168 @@
+<html>
+<head>
+	<script src="http://code.jquery.com/jquery-1.10.1.min.js"></script>
+	<script src="http://code.highcharts.com/highcharts.js"></script>
+</head>
+<body>
+	<div id="GetResults"></div>
+	Add a transaction: <br /><input type="date" name="tdate" /> Qty: <input style="width:50px" name="quantity" pattern="\d*" /> Price:<input style="width:50px" pattern="\d*" name="price"/> DRIP? <input type="checkbox" name="isDrip" /><input type="button" value="+" id="sharesAdd" /><input type="button" value="-" id="sharesSold" />
+	<div id="DeleteResults"></div>
+	<div id="Chart" style="width:300px"></div>
+	<div id="ChartResults"></div>
+	
+	<script>
+//	var ident =3;
+	var stockSymbol = "EGL-UN";
+	var stockMarket = "TSX";
+	var clientIdentifier = "1";
+	
+	$(document).ready(function() {
+		jQuery.support.cors = true;
+		
+	
+		getData();
+		$("#sharesAdd").click(function() {
+			$("#sharesAdd, #sharesSold").attr("disabled", "disabled");
+			var isDrip = false;
+			if($("input[name=isDrip]").val() == "on") isDrip = true;
+			postData($("input[name=tdate]").val() + "T12:00:00.000Z", $("input[name=quantity]").val(), $("input[name=price]").val(), isDrip);
+		});
+		$("#sharesSold").click(function() {
+			$("#sharesAdd, #sharesSold").attr("disabled", "disabled");
+			var isDrip = false;
+			if($("input[name=isDrip]").val() == "on") isDrip = true;
+			postData($("input[name=tdate]").val() + "T12:00:00.000Z", $("input[name=quantity]").val()*-1, $("input[name=price]").val(), isDrip);
+		});
+		
+		//postData();
+		//deleteData();
+		
+		
+	
+	});
+	
+	function getTotalReturn()
+	{
+		$.ajax({
+			type: "GET",
+			beforeSend: function (request)
+            {
+                request.setRequestHeader("X-ApiKey", "dec39crafrU9axaw2nahuq8663EwruRa");
+            },
+			url: "http://www.opimsys.com/api/share/TotalReturn/1",
+			data: {	market: "TSX",
+				symbol: "EGL-UN",
+				clientIdentifier: "1"
+			}, 
+			dataType: 'jsonp',
+			success: function(response) {
+				result = "<table style='width:100%'><tr><th>Return Month</th><th>Invested</th><th>Shares</th><th>SharePrice</th><th>DividendPaid</th><th>Shares Purchased</th><th>Total Return</th></tr>";
+				var columns = new Array();
+				var data1 = new Array();
+				for(i=0; i<response.length; i++)
+				{
+					columns[i] = response[i].ReturnMonth;
+					data1[i] = response[i].TotalReturn;
+					result += "<tr><td>"+response[i].ReturnMonth+"</td><td>"+response[i].Invested+"</td><td>"+response[i].Shares+"</td><td>"+response[i].SharePrice+"</td><td>"+response[i].DividendAmt+"</td><td>"+response[i].SharesPurchased+"</td><td>"+response[i].TotalReturn+"</td></tr>";
+				}
+				result += "</table>";
+
+				$('#Chart').highcharts({
+					chart: {
+						type: 'column'
+					},
+					legend: { enabled: false },
+					title: {
+						text: 'Total Return'
+					},
+					xAxis: {
+						categories: columns,
+						labels: { enabled:false }
+						
+					},
+					credits: {
+						enabled: false
+					},
+					series: [{
+						name: '',
+						data: data1
+					}]
+				});
+  
+				$('#ChartResults').html(result);
+				
+			}
+		});
+	}
+	function postData(transDate, quantity, price, isDrip )
+	{
+		var source = {
+				'Market': "TSX",
+				'Symbol': "EGL-UN", 
+				'ClientIdentifier': "1",
+				'Transactions': [{
+						'TransactionDate' : transDate,
+						'Price' : price,
+						'Quantity' : quantity,
+						'IsDrip': isDrip	
+						}]
+				};
+		$.ajax({
+			type: "POST",
+			beforeSend: function (request)
+            {
+                request.setRequestHeader("X-ApiKey", "dec39crafrU9axaw2nahuq8663EwruRa");
+            },
+			url: "http://www.opimsys.com/api/share/", 
+			data: source
+		}).complete(function(data) {
+			getData();
+			$("#sharesAdd, #sharesSold").removeAttr("disabled");
+		});
+	}
+	function deleteData(ident)
+	{
+		$.ajax({
+			type: "DELETE",
+			beforeSend: function (request)
+            {
+                request.setRequestHeader("X-ApiKey", "dec39crafrU9axaw2nahuq8663EwruRa");
+            },
+			url: "http://www.opimsys.com/api/share/"+ident+""
+		}).complete(function(data) {
+			getData();
+		});
+	}
+	function getData()
+	{
+		$.ajax({
+			type: "GET",
+			beforeSend: function (request)
+            {
+                request.setRequestHeader("X-ApiKey", "dec39crafrU9axaw2nahuq8663EwruRa");
+            },
+			url: "http://www.opimsys.com/api/share/GetShares/1?callback=?",
+			data: {	market: "TSX",
+				symbol: "EGL-UN",
+				clientIdentifier: "1"
+			}, 
+			dataType: 'jsonp',
+			success: function(response) {
+				result = "<table>";
+				for(i=0; i<response.length; i++)
+				{
+					result += "<tr><td>"+response[i].TransactionDate.substring(0, response[i].TransactionDate.indexOf('T')) +"</td><td>"+response[i].Quantity+"</td><td>"+response[i].Price+"</td><td>"+response[i].IsDrip+"</td><td><a data-shareid='"+response[i].ShareId+"' href='#' class='deleteShare'>del</a></tr>";
+				}
+				result += "</table>";
+				$('#GetResults').html(result);
+				$("a.deleteShare").click(function(e) {
+					deleteData($(this).data("shareid"));
+					e.preventDefault();
+				});
+			}
+		});
+	}
+	
+	</script>
+</body>
+</html>

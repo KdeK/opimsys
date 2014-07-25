@@ -1,0 +1,73 @@
+﻿@model OPIMsys.Models.UserProfile
+@using OPIMsys.Models
+@{
+    ViewBag.Title = "Edit";
+}
+
+<h2>Edit</h2>
+
+@using (Html.BeginForm()) {
+    @Html.ValidationSummary(true)
+    @Html.Hidden("UserId", Model.UserId)
+    @Html.Hidden("UserName", Model.UserName)
+    <fieldset>
+        <legend>User Profile</legend>
+        
+        <div class="editor-label">
+            @Html.LabelFor(model => model.UserName)
+        </div>
+        <div class="editor-field">
+            @Html.DisplayFor(model => model.UserName)
+        </div>
+        <div class="editor-label">
+            @Html.LabelFor(model => model.FullName)
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.FullName)
+            @Html.ValidationMessageFor(model => model.FullName)
+        </div>
+        <div class="editor-label">
+            @Html.LabelFor(model => model.Email)
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.Email)
+            @Html.ValidationMessageFor(model => model.Email)
+        </div>
+
+        <h2>Role</h2>
+
+             <div class="roleCheckList">
+            @{  foreach (string o in ViewBag.Roles)
+                {
+                    var optionValue = "Role_" + o;
+                    string selectLoc = "";
+                    if (Array.IndexOf(ViewBag.SelectedRoles,o) >= 0) { selectLoc = "checked"; }
+                        <div class="regionValue">
+                            <label for="@optionValue">@o</label>
+                            <input type="checkbox" id="@optionValue" @selectLoc name="RolesOptions" value="@o" />
+                        </div>
+                }   
+            }
+            </div>
+        <h2>Keys</h2>
+            @Html.ActionLink("Create API Key", "EditApiKey", "Account", new { id = 0, userId = Model.UserId }, new { })
+            <ul>
+            @{  foreach (AccountApiKey o in (IEnumerable<AccountApiKey>)ViewBag.ApiKeys)
+                {
+                    <li><span>@o.Company.Name</span> - @o.ApiKey - @Html.ActionLink("edit", "EditApiKey", "Account", new { id = @o.AccountApiKeyId, userId = Model.UserId }, new { }) - @Html.ActionLink("delete", "DeleteApiKey", "Account", new { id = @o.AccountApiKeyId }, new { })</li>
+                }
+            }
+            </ul>
+        <p>
+            <input type="submit" value="Save" />
+        </p>
+    </fieldset>
+}
+
+<div>
+    @Html.ActionLink("Back to List", "Index")
+</div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}

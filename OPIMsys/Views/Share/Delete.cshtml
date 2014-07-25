@@ -1,0 +1,61 @@
+﻿@model OPIMsys.Models.Share
+
+@{
+    ViewBag.Title = "Delete";
+}
+
+<h2>Delete</h2>
+
+<h3>Are you sure you want to delete this?</h3>
+<fieldset>
+    <legend>Share</legend>
+
+    <div class="display-label">
+         @Html.DisplayNameFor(model => model.ClientRemoteId)
+    </div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.ClientRemoteId)
+    </div>
+
+    <div class="display-label">
+         @Html.DisplayNameFor(model => model.StockQuoteId)
+    </div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.StockQuoteId)
+    </div>
+
+    <div class="display-label">
+         @Html.DisplayNameFor(model => model.TransactionDate)
+    </div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.TransactionDate)
+    </div>
+
+    <div class="display-label">
+         @Html.DisplayNameFor(model => model.Price)
+    </div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.Price)
+    </div>
+
+    <div class="display-label">
+         @Html.DisplayNameFor(model => model.Quantity)
+    </div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.Quantity)
+    </div>
+
+    <div class="display-label">
+         @Html.DisplayNameFor(model => model.IsDrip)
+    </div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.IsDrip)
+    </div>
+</fieldset>
+@using (Html.BeginForm()) {
+    @Html.AntiForgeryToken()
+    <p>
+        <input type="submit" value="Delete" /> |
+        @Html.ActionLink("Back to List", "Index")
+    </p>
+}

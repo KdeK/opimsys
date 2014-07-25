@@ -1,0 +1,143 @@
+﻿@model OPIMsys.Models.Company
+
+@{
+    ViewBag.Title = "Details";
+}
+
+<fieldset>
+    <legend>Company</legend> 
+    <h2>
+        @Html.DisplayFor(model => model.Name)
+    </h2>
+    @Html.ActionLink("Edit Company Name", "Edit", new { id = Model.CompanyId })
+    <h3>Company Information</h3>
+    @Html.ActionLink("Create New", "CreateCompanyInformation", new { companyid = Model.CompanyId })
+    <ul>
+    @foreach (var lang in ViewBag.CompanyLanguages)
+    {
+        <li id="CP-@lang.Culture">@lang.Title</li>       
+    }
+    </ul>
+    @foreach (var lang in ViewBag.CompanyLanguages)
+    {
+        <div class="CP-@lang.Culture">
+            @foreach(var item in Model.CompanyInformation.Where(a => a.Language == lang).ToList())
+            {
+                <h4>Short Description</h4>
+                <p>@item.ShortDescription</p>
+                <h4>Long Description</h4>
+                <p>@item.LongDescription</p> 
+                @Html.ActionLink("Edit", "EditCompanyInformation", new { id=@item.CompanyInformationId })
+            }
+        </div>   
+    }
+    <h3>Stocks</h3>
+    @Html.ActionLink("Create New", "CreateSymbol", new { companyid = Model.CompanyId })
+    <ul>
+    @foreach(var item in Model.StockSymbols)
+    {
+            <li>@item.Market.MarketName - @item.Symbol - @Html.ActionLink("Delete", "DeleteSymbol", new { id = item.StockSymbolId }) - Details - @Html.ActionLink("Dividends", "Dividends", new { id = item.StockSymbolId })</li>   
+    }
+    </ul>
+    <h3>Events</h3>
+    @Html.ActionLink("See Events", "Events", new { id = Model.CompanyId })<br />
+    Sources - @Html.ActionLink("Create New", "CreateEventSource", new { companyid = Model.CompanyId })
+    <ul>
+        @foreach(var item in Model.EventSources)
+        {
+            <li>(@item.Language.Culture) - @item.Link - @Html.ActionLink("Edit", "CreateEventSource", new { id=item.EventSourceId}) - @Html.ActionLink("Delete", "DeleteEventSource", new { id=item.EventSourceId})</li>   
+        }
+    </ul>
+    <h3>Links</h3>
+    @Html.ActionLink("Create New", "CreateCompanyLink", new { companyid = Model.CompanyId})
+    <ul>
+        @foreach(var item in Model.CompanyLinks)
+        {
+            <li>@item.CompanyLinkType.Title (@item.Language.Culture) - @item.Link - @Html.ActionLink("Edit", "EditCompanyLink", new { id=item.CompanyLinkId}) - @Html.ActionLink("Delete", "DeleteCompanyLink", new { id=item.CompanyLinkId})</li>   
+        }
+    </ul>
+    <h3>Documents</h3>
+    @foreach (var docType in ViewBag.DocumentTypes)
+    {
+        <h4>@docType.Title</h4> 
+        <ul>
+            @foreach (var lang in ViewBag.CompanyLanguages)
+            {
+                <li>@lang.Title - @Html.ActionLink("Create New", "CreateDocument", new {documenttypeid=docType.DocumentTypeId ,companyid = Model.CompanyId, languageid = lang.LanguageId})<ul>
+                    @foreach (var item in Model.Documents.Where(a => a.DocumentTypeId == docType.DocumentTypeId).Where(a => a.LanguageId == @lang.LanguageId).OrderByDescending(a => a.PubDate))
+                    {
+                            <li><a href="http://@item.Link" target="_blank">@item.Title</a> -  @Html.ActionLink("Edit", "CreateDocument", new { id = item.DocumentId})  - @Html.ActionLink("Delete", "DeleteDocument", new { id = item.DocumentId})</li>
+                    }
+                </ul></li>
+            }
+        </ul>
+    }
+    <h3>Pages</h3>
+    <ul>
+            @foreach (var lang in ViewBag.CompanyLanguages)
+            {
+                <li>@lang.Title - @Html.ActionLink("Create New", "CreateCompanyPage", new {companyid = Model.CompanyId, languageid = lang.LanguageId})<ul>
+                    @foreach (var item in Model.CompanyPages.Where(a => a.LanguageId == @lang.LanguageId).OrderBy(a => a.PageId).GroupBy(a => a.PageId))
+                    {   
+                        <li>@item.OrderByDescending(a => a.Revision).First().PageName - 
+                             @Html.ActionLink("Edit", "CreateCompanyPage", new { id = item.OrderByDescending(a => a.Revision).First().CompanyPageId}) -
+                            @if(item.OrderByDescending(a => a.Revision).First().Enabled) {
+                             @Html.ActionLink("Disable", "ToggleCompanyPage", new { id = item.OrderByDescending(a => a.Revision).First().CompanyPageId})
+                            }
+                            else{
+                                @Html.ActionLink("Enable", "ToggleCompanyPage", new { id = item.OrderByDescending(a => a.Revision).First().CompanyPageId})    
+                            }
+
+                             - @Html.ActionLink("Delete", "DeleteCompanyPage", new { id = item.OrderByDescending(a => a.Revision).First().CompanyPageId})
+
+                        </li>
+                    }
+                </ul></li>
+            }
+    </ul>
+    <h3>People</h3>
+    @Html.ActionLink("Create New", "CreatePeople", new { companyid = Model.CompanyId})
+    <ul>
+        @foreach (var item in Model.People)
+        {
+            <li>
+                    @item.LastName<text>, </text>@item.FirstName<text> (</text>
+                    @foreach(var type in item.PeopleTypes){
+                        @type.Title 
+                    }
+                    <text>)</text> - @Html.ActionLink("Edit", "EditPeople", new { id = item.PeopleId}) - @Html.ActionLink("Delete", "DeletePeople", new { id = item.PeopleId})<br />
+                    Profiles
+                    @foreach (var lang in ViewBag.Languages)
+                    {
+                        @Html.ActionLink((string)lang.Title, "CreatePeopleInformation", new { peopleid=item.PeopleId, languageid=lang.LanguageId })
+                    }
+            </li> 
+        }
+    </ul>
+    <h3>News Sources</h3>
+    @Html.ActionLink("Create New", "CreateNewsSource", new { companyid = Model.CompanyId, id = 0})
+    <ul>
+        @foreach( var item in Model.NewsSources)
+        {
+            <li>
+                @item.NewsSourceType.Title - <a href='http://@item.Link' target="_new">Link</a> - @Html.ActionLink("Edit", "CreateNewsSource", new { companyid = Model.CompanyId, id = item.NewsSourceId }) - @Html.ActionLink("Delete", "DeleteNewsSource", new { id = item.NewsSourceId })
+            </li>
+        }
+    </ul>
+    @Html.ActionLink("Company Peers", "UpdatePeers", new { id = Model.CompanyId })<br />
+    <br />
+    @Html.ActionLink("Market Comparison", "UpdateMarketComparison", new { id = Model.CompanyId })
+
+    <br />
+    <br />
+    <br />
+
+    
+
+
+
+</fieldset>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id=Model.CompanyId }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>

@@ -1,0 +1,87 @@
+﻿@model OPIMsys.Models.Event
+
+@{
+    ViewBag.Title = "CreateEvent";
+}
+
+<h2>CreateEvent</h2>
+
+@using (Html.BeginForm()) {
+    @Html.AntiForgeryToken()
+    @Html.ValidationSummary(true)
+
+    <fieldset>
+        <legend>Event</legend>
+        @Html.HiddenFor(model => model.CompanyId)
+        @Html.HiddenFor(model => model.EventId)
+        @Html.HiddenFor(model => model.EventSourceId)
+        <div class="editor-label">
+            @Html.LabelFor(model => model.EventCategoryId)
+        </div>
+        <div class="editor-field">
+            @Html.DropDownList("EventCategoriesList", String.Empty)
+            @Html.ValidationMessageFor(model => model.EventCategoryId)
+        </div>
+       @if(Model.EventDetails != null)
+       {
+           @Html.Hidden("EventDetailId", Model.EventDetails.First().EventDetailId)
+            <div class="editor-label">
+                @Html.LabelFor(model => model.EventDetails.First().Summary)
+            </div>
+            <div class="editor-field">
+                @Html.EditorFor(model => model.EventDetails.First().Summary)
+                @Html.ValidationMessageFor(model => model.EventDetails.First().Summary)
+            </div>
+               <div class="editor-label">
+                @Html.LabelFor(model => model.EventDetails.First().Description)
+            </div>
+            <div class="editor-field">
+                @Html.EditorFor(model => model.EventDetails.First().Description)
+                @Html.ValidationMessageFor(model => model.EventDetails.First().Description)
+            </div>
+       }
+        else{
+            <div class="editor-label">
+                @Html.LabelFor(model => model.EventDetails.First().Summary)
+            </div>
+            <div class="editor-field">
+                @Html.Editor("Summary")
+            </div>
+           <div class="editor-label">
+                @Html.LabelFor(model => model.EventDetails.First().Description)
+            </div>
+            <div class="editor-field">
+                @Html.Editor("Description")
+            </div>
+       
+       }
+        
+        <div class="editor-label">
+            @Html.LabelFor(model => model.StartTime)
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.StartTime)
+            @Html.ValidationMessageFor(model => model.StartTime)
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.EndTime)
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.EndTime)
+            @Html.ValidationMessageFor(model => model.EndTime)
+        </div>
+
+        <p>
+            <input type="submit" value="Create" />
+        </p>
+    </fieldset>
+}
+
+<div>
+    @Html.ActionLink("Back to List", "Events", new { id = Model.CompanyId})
+</div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}

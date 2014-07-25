@@ -1,0 +1,38 @@
+﻿@model IEnumerable<OPIMsys.Models.StockDividend>
+
+@{
+    ViewBag.Title = "Dividends";
+}
+
+<h2>Dividends</h2>
+
+<p>
+    @Html.ActionLink("Create New", "CreateDividend", new { id = 0, stockSymbolId = ViewBag.StockSymbolId })
+</p>
+<table>
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.RecordDate)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Dividend)
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.RecordDate)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Dividend)
+        </td>
+        <td>
+            @Html.ActionLink("Edit", "CreateDividend", new { id=item.StockDividendId, stockSymbolId = ViewBag.StockSymbolId }) |
+            @Html.ActionLink("Delete", "DeleteDividend", new { id=item.StockDividendId })
+        </td>
+    </tr>
+}
+
+</table>

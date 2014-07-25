@@ -1,0 +1,57 @@
+﻿@model OPIMsys.Models.Share
+
+@{
+    ViewBag.Title = "Details";
+}
+
+<h2>Details</h2>
+
+<fieldset>
+    <legend>Share</legend>
+
+    <div class="display-label">
+         @Html.DisplayNameFor(model => model.ClientRemoteId)
+    </div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.ClientRemoteId)
+    </div>
+
+    <div class="display-label">
+         @Html.DisplayNameFor(model => model.StockQuoteId)
+    </div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.StockQuoteId)
+    </div>
+
+    <div class="display-label">
+         @Html.DisplayNameFor(model => model.TransactionDate)
+    </div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.TransactionDate)
+    </div>
+
+    <div class="display-label">
+         @Html.DisplayNameFor(model => model.Price)
+    </div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.Price)
+    </div>
+
+    <div class="display-label">
+         @Html.DisplayNameFor(model => model.Quantity)
+    </div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.Quantity)
+    </div>
+
+    <div class="display-label">
+         @Html.DisplayNameFor(model => model.IsDrip)
+    </div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.IsDrip)
+    </div>
+</fieldset>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id=Model.ShareId }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>
